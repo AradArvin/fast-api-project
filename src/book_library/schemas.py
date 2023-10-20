@@ -4,8 +4,8 @@ from typing import Optional
 
 
 
-class Book(BaseModel):
-    id: str = Field(default_factory=uuid.uuid4, alias="_id")
+class Book(BaseModel): 
+    _id: str
     title: str = Field()
     pages: int = Field()
     author: str = Field()
@@ -16,7 +16,7 @@ class Book(BaseModel):
 
 
 class UpdateBook(BaseModel):
-    id: str = Field(default_factory=uuid.uuid4, alias="_id")
+    _id: str
     title: str = Field()
     pages: int = Field()
     author: str = Field()
