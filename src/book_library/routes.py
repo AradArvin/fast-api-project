@@ -29,3 +29,12 @@ async def see_the_list_of_books():
     return book_list
 
 
+
+@router.delete("/del", response_description="Delete a book from library", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_a_book(book_id: str):
+    result = collection.delete_data_from_db_collection(ObjectId(book_id))
+    
+    if result is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book with this id does not exist!")
+    
+
