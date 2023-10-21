@@ -49,3 +49,23 @@ async def find_a_book(book_id: str):
     return result
 
 
+
+@router.put("/update", response_description="Update a books data in the library.", status_code=status.HTTP_200_OK)
+async def update_a_book(book_id: str, book: UpdateBook = Body()):
+    find_book = collection.find_data_by_id(ObjectId(book_id))
+    
+    if find_book is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book with this id does not exist!")
+    
+    book = {k: v for k, v in dict(book).items() if v if not None}
+
+    if len(book) >= 1:
+        result = collection.update_db_collection_data(instance_id=ObjectId(book_id), updated_instance=book)
+        
+        if result.modified_count == 0:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No changes detected!")
+        
+        updated_book = collection.find_data_by_id(ObjectId(book_id))
+        return updated_book
+        
+    
