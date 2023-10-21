@@ -1,8 +1,11 @@
-from fastapi import APIRouter, Body, status
+from fastapi import APIRouter, Body, status, HTTPException
 from fastapi.encoders import jsonable_encoder
-from .schemas import Book
-from .db import collection
-# from bson.objectid import ObjectId
+
+from .schemas import Book, UpdateBook
+from .db import MongoDBConnectionManager, ObjectId
+
+
+collection = MongoDBConnectionManager(database="book_library", collection="q_search")
 
 router = APIRouter()
 
