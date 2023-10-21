@@ -38,3 +38,14 @@ async def delete_a_book(book_id: str):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book with this id does not exist!")
     
 
+
+@router.get("/find", response_description="Find a book in the library.", status_code=status.HTTP_200_OK)
+async def find_a_book(book_id: str):
+    result = collection.find_data_by_id(ObjectId(book_id))
+    
+    if result is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book with this id does not exist!")
+    
+    return result
+
+
