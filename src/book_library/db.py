@@ -43,3 +43,7 @@ class MongoDBConnectionManager:
         result = self.collection.find_one_and_delete({"_id":instance_id})
         return result
 
+
+    def update_db_collection_data(self, instance_id: ObjectId, updated_instance: BaseModel):
+        result = self.collection.update_one({"_id": instance_id}, {"$set": updated_instance})
+        return result
