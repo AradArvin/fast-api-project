@@ -27,3 +27,15 @@ class MongoDBConnectionManager:
         return result
 
 
+    def get_data_from_db_collection(self):
+        data_list = list()
+
+        collection_datas = self.collection.find()
+
+        for data in collection_datas:
+            data["_id"] = str(data["_id"])
+            data_list.append(data)
+
+        return data_list
+
+
