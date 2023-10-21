@@ -22,3 +22,8 @@ class MongoDBConnectionManager:
         return result
 
 
+    def save_data_to_db_collection(self, instance: BaseModel):
+        result = self.collection.insert_one(instance)
+        return result
+
+
