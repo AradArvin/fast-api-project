@@ -22,14 +22,10 @@ async def create_a_book(book: Book = Body()):
 
 
 
-@router.get("/", response_description="List all books", status_code=status.HTTP_200_OK)
-def list_books():
-    book_list = list()
-    
-    books = collection.find()
-    
-    for book in books:
-        book["_id"] = str(book["_id"])
-        book_list.append(book)
+@router.get("/list", response_description="List all books in the library", status_code=status.HTTP_200_OK)
+async def see_the_list_of_books():
+    book_list = collection.get_data_from_db_collection()
 
     return book_list
+
+
