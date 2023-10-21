@@ -10,16 +10,16 @@ collection = MongoDBConnectionManager(database="book_library", collection="q_sea
 router = APIRouter()
 
 
-@router.post("/", response_description="Add a new book", status_code=status.HTTP_201_CREATED)
-async def create_books(book: Book = Body()):
+
+@router.post("/create", response_description="Add a new book to library", status_code=status.HTTP_201_CREATED)
+async def create_a_book(book: Book = Body()):
     book = jsonable_encoder(book)
+    new_book = collection.save_data_to_db_collection(instance=book)
 
-    new_book = collection.insert_one(book)
-    created_book = collection.find_one(
-        {"_id": new_book.inserted_id}
-    )
-
+    created_book = collection.find_data_by_id(new_book.inserted_id)
+    
     return created_book
+
 
 
 @router.get("/", response_description="List all books", status_code=status.HTTP_200_OK)
