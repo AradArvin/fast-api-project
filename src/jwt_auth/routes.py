@@ -35,3 +35,14 @@ async def user_signup(user: User = Body()):
 
 
 
+
+def check_user(data: UserLogin):
+    users = user_collection.get_data_from_db_collection()
+
+    for user in users:
+        if user.email == data.email and user.password == data.password:
+            return True
+    return False
+
+
+
