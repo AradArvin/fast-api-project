@@ -1,5 +1,5 @@
-import uuid
-from pydantic import BaseModel, Field
+
+from pydantic import BaseModel, Field, EmailStr
 from typing import Optional
 
 
@@ -35,3 +35,8 @@ class User(BaseModel):
     class Config:
         populate_by_name = True
 
+
+class UserLogin(BaseModel):
+    _id: str
+    email: EmailStr = Field()
+    password: str = Field()
