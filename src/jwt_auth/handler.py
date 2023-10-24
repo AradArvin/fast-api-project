@@ -22,4 +22,13 @@ def token_response(token: str, type: str):
 
 
 
+def gen_jti():
+    """Generate hexed unique id for user"""
+    return str(uuid.uuid4().hex)
+
+
+jti = gen_jti()
+
+
+
 
