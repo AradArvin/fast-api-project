@@ -31,4 +31,19 @@ jti = gen_jti()
 
 
 
+def access_token_gen(user_id: ObjectId):
+    """Generate access token based on usser id."""
+
+    access_token = token_encode({
+        'token_type':'access',
+        'user_id':str(user_id),
+        'exp': datetime.utcnow() + timedelta(minutes=10),
+        'iat': datetime.utcnow(),
+        'jti':jti
+    })
+
+    return access_token
+
+
+
 
