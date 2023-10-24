@@ -70,3 +70,10 @@ def token_encode(payload):
 
 
 
+def token_decode(token):
+    """Dencode tokens based on HS256 algorithm"""
+
+    payload = jwt.decode(jwt=token, key=JWT_SECRET, algorithms=[JWT_ALGORITHM])
+    return payload
+
+
