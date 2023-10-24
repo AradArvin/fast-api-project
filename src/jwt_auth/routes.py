@@ -46,3 +46,20 @@ def check_user(data: UserLogin):
 
 
 
+@router.post("/login", response_description="Login to you'r user account using email & password", status_code=status.HTTP_200_OK)
+async def user_login(user: UserLogin = Body()):
+    if check_user(user):
+        access_token = access_token_gen(user._id)
+        refresh_token = refresh_token_gen(user._id)
+
+        refresh_dict = {
+            "user_id": str(user._id),
+            "refresh_token": refresh_token,
+            }
+        json_encoded_refresh = jsonable_encoder(refresh_dict)
+        jwt_collection.save_data_to_db_collection(instance=json_encoded_refresh)
+
+        return token_response(access_token, "access")
+    return {
+        "error": "Wrong login Data!",
+    }
