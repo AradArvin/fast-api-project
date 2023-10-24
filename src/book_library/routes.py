@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Body, status, HTTPException
 from fastapi.encoders import jsonable_encoder
 
-from .schemas import Book, UpdateBook
+from .schemas import *
 from .db import MongoDBConnectionManager, ObjectId
 
 
