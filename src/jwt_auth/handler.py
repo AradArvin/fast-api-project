@@ -61,4 +61,12 @@ def refresh_token_gen(user_id: ObjectId):
 
 
 
+def token_encode(payload):
+    """Encode tokens based on HS256 algorithm"""
+
+    token = jwt.encode(payload=payload, key=JWT_SECRET, algorithm=JWT_ALGORITHM)
+    return token
+
+
+
 
