@@ -46,4 +46,19 @@ def access_token_gen(user_id: ObjectId):
 
 
 
+def refresh_token_gen(user_id: ObjectId):
+    """Generate refresh token based on usser id."""
+
+    refresh_token = token_encode({
+        'token_type':'refresh',
+        'user_id':str(user_id),
+        'exp': datetime.utcnow() + timedelta(days=1),
+        'iat': datetime.utcnow(),
+        'jti':jti
+    })
+    
+    return refresh_token
+
+
+
 
