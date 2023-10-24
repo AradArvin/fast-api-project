@@ -22,3 +22,16 @@ class UpdateBook(BaseModel):
     pages: int = Optional[int]
     author: str = Optional[str]
     publisher: str = Optional[str]
+
+
+
+
+class User(BaseModel):
+    _id: str
+    username: str = Field()
+    email: EmailStr = Field()
+    password: str = Field()
+
+    class Config:
+        populate_by_name = True
+
