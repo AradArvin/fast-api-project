@@ -13,7 +13,18 @@ class MongoDBConnectionManager:
         self.client = MongoClient(self.HOST_ADDRESS)
         self.database = self.client[database]
         self.collection = self.database[collection]
-    
+
+
+    def set_index(self, index_name):
+
+        indexes = self.collection.list_indexes()
+        for index in indexes:
+            if index["name"] == index_name:
+                return 
+            
+        index_to_set = (f"{index_name}", 1)
+        self.collection.create_index(keys=[index_to_set,], expireAfterSeconds=0)
+
 
     def find_data_by_id(self, instance_id: ObjectId):
         result = self.collection.find_one({"_id":instance_id})
