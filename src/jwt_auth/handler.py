@@ -37,7 +37,7 @@ def access_token_gen(user_id: ObjectId):
     access_token = token_encode({
         'token_type':'access',
         'user_id':str(user_id),
-        'exp': datetime.utcnow() + timedelta(minutes=10),
+        'exp': datetime.utcnow() + timedelta(seconds=30),
         'iat': datetime.utcnow(),
         'jti':jti
     })
@@ -52,7 +52,7 @@ def refresh_token_gen(user_id: ObjectId):
     refresh_token = token_encode({
         'token_type':'refresh',
         'user_id':str(user_id),
-        'exp': datetime.utcnow() + timedelta(days=1),
+        'exp': datetime.utcnow() + timedelta(minutes=1),
         'iat': datetime.utcnow(),
         'jti':jti
     })
