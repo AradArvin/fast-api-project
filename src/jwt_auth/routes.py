@@ -90,3 +90,14 @@ def check_token_expiry(token):
 
 
 
+@router.get("/delete_tokens", response_description="Delete the expired refresh tokens", status_code=status.HTTP_200_OK)
+async def delete_tokens():
+    tokens = jwt_collection.get_data_from_db_collection()
+    
+    t_count = 0
+    for token in tokens:
+        if check_token_expiry(token["refresh_token"]) == "expired":
+            jwt_collection.delete_data_from_db_collection(ObjectId(token["_id"]))
+            t_count += 1
+
+    return {"detail": f"{t_count} Tokens were deleted."}
