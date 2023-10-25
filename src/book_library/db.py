@@ -33,6 +33,11 @@ class MongoDBConnectionManager:
         return result
 
 
+    def find_data_by_another_field(self, field_name: str, field_data: str):
+        result = self.collection.find_one({f"{field_name}":field_data})
+        return result
+    
+
     def save_data_to_db_collection(self, instance: BaseModel):
         result = self.collection.insert_one(instance)
         return result
