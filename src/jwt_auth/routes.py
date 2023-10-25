@@ -12,13 +12,18 @@ router = APIRouter()
 user_collection = MongoDBConnectionManager(database="users", collection="user_data")
 jwt_collection = MongoDBConnectionManager(database="jwt_auth", collection="tokens")
 
+# jwt_collection.set_index("expireAt")
 
 
 
 @router.post("/signup", response_description="Create a new user account", status_code=status.HTTP_201_CREATED)
 async def user_signup(user: User = Body()):
     user = jsonable_encoder(user)
-
+    all_users = user_collection.get_data_from_db_collection()
+    for data in all_users:
+        if data["email"] == user["email"]:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User with this email already exists!")
+        
     new_user = user_collection.save_data_to_db_collection(instance=user)
 
     access_token = access_token_gen(new_user.inserted_id)
