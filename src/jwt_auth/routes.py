@@ -82,3 +82,11 @@ async def user_login(user: UserLogin = Body()):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found. Please check login data!")
 
 
+def check_token_expiry(token):
+    try:
+        token_decode(token)
+    except jwt.ExpiredSignatureError:
+        return "expired"
+
+
+
