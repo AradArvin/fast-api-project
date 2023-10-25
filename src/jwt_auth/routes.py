@@ -50,6 +50,16 @@ def check_user(data: UserLogin):
     return False
 
 
+def check_token(data: UserLogin):
+    users = user_collection.get_data_from_db_collection()
+    for user in users:
+        if user["email"] == data["email"] and user["password"] == data["password"]:
+            result = jwt_collection.find_data_by_another_field("user_id", str(user["_id"]))
+            if result:
+                return False
+    return True
+    
+
 
 @router.post("/login", response_description="Login to you'r user account using email & password", status_code=status.HTTP_200_OK)
 async def user_login(user: UserLogin = Body()):
