@@ -9,7 +9,7 @@ collection = MongoDBConnectionManager(database="book_library", collection="q_sea
 
 book_router = APIRouter()
 
-
+# response_model
 
 @book_router.post("/create", response_description="Add a new book to library", status_code=status.HTTP_201_CREATED)
 async def create_a_book(book: Book = Body()):
@@ -50,7 +50,7 @@ async def find_a_book(book_id: str):
 
 
 
-@book_router.put("/update", response_description="Update a books data in the library.", status_code=status.HTTP_200_OK)
+@book_router.put("/update", response_description="Update a books data in the library.", status_code=status.HTTP_201_CREATED)
 async def update_a_book(book_id: str, book: UpdateBook = Body()):
     find_book = collection.find_data_by_id(ObjectId(book_id))
     
