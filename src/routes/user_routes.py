@@ -19,7 +19,7 @@ jwt_collection = MongoDBConnectionManager(database="jwt_auth", collection="token
 @user_router.post("/signup", response_description="Create a new user account", status_code=status.HTTP_201_CREATED)
 async def user_signup(user: User = Body()):
     user = jsonable_encoder(user)
-    all_users = await user_collection.get_data_from_db_collection()
+    all_users = user_collection.get_data_from_db_collection()
     for data in all_users:
         if data["email"] == user["email"]:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User with this email already exists!")
@@ -42,7 +42,7 @@ async def user_signup(user: User = Body()):
 
 
 async def check_user(data: UserLogin):
-    users = await user_collection.get_data_from_db_collection()
+    users = user_collection.get_data_from_db_collection()
     
     for user in users:
         if user["email"] == data["email"] and user["password"] == data["password"]:
@@ -51,7 +51,7 @@ async def check_user(data: UserLogin):
 
 
 async def check_token(data: UserLogin):
-    users = await user_collection.get_data_from_db_collection()
+    users = user_collection.get_data_from_db_collection()
     for user in users:
         if user["email"] == data["email"] and user["password"] == data["password"]:
             result = jwt_collection.find_data_by_another_field("user_id", str(user["_id"]))
@@ -96,7 +96,7 @@ async def delete_tokens():
     
     t_count = 0
     for token in tokens:
-        if check_token_expiry(token["refresh_token"]) == "expired":
+        if await check_token_expiry(token["refresh_token"]) == "expired":
             jwt_collection.delete_data_from_db_collection(ObjectId(token["_id"]))
             t_count += 1
 
@@ -142,3 +142,5 @@ async def update_user_profile(user: UpdateProfile = Body(), auth_token: AuthJWT 
     
     
 # TODO logout
+# TODO get access token from refresh token
+# TODO
