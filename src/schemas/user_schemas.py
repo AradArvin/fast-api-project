@@ -25,3 +25,6 @@ class UserProfile(BaseModel):
     password: str = Field()
 
 
+
+class AuthJWT(BaseModel):
+    token: str = Field()
