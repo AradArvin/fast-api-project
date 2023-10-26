@@ -16,3 +16,12 @@ class UserLogin(BaseModel):
     _id: str
     email: EmailStr = Field()
     password: str = Field()
+
+
+
+class UserProfile(BaseModel):
+    _id: str
+    email: EmailStr = Field()
+    password: str = Field()
+
+
