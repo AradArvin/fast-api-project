@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, status, HTTPException
+from fastapi import APIRouter, Body, status, HTTPException, Depends
 from fastapi.encoders import jsonable_encoder
 
 from schemas.user_schemas import *
