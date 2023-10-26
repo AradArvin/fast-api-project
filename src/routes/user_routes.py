@@ -104,4 +104,19 @@ async def delete_tokens():
 
 
 
+
+
+@user_router.post("/see_profile", response_description="See you'r profile", status_code=status.HTTP_200_OK)
+async def user_profile(user: UserProfile = Body(), auth_token: AuthJWT = Body()):
+    user = jsonable_encoder(user)
+    token = jsonable_encoder(auth_token)
+    print
+    if await check_user(user):
+        if await check_token_expiry(token["token"]) != "expired":
+            user_data = user_collection.find_data_by_another_field("email", user["email"])
+            return user_data
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token is invalid!")
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found. Please check login data!")
+
+
 # TODO logout
