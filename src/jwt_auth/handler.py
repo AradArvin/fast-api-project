@@ -10,7 +10,7 @@ JWT_ALGORITHM = config("JWT_ALGORITHM")
 
 
 
-async def token_response(token: str, type: str):
+def token_response(token: str, type: str):
     if type == "access":
         return {
             "access_token": token
@@ -22,58 +22,58 @@ async def token_response(token: str, type: str):
 
 
 
-async def gen_jti():
+def gen_jti():
     """Generate hexed unique id for user"""
-    return await str(uuid.uuid4().hex)
+    return str(uuid.uuid4().hex)
 
 
 jti = gen_jti()
 
 
 
-async def access_token_gen(user_id: ObjectId):
+def access_token_gen(user_id: ObjectId):
     """Generate access token based on usser id."""
 
     access_token = token_encode({
         'token_type':'access',
         'user_id':str(user_id),
-        'exp': datetime.utcnow() + timedelta(seconds=30),
+        'exp': datetime.utcnow() + timedelta(minutes=5),
         'iat': datetime.utcnow(),
         'jti':jti
     })
 
-    return await access_token
+    return access_token
 
 
 
-async def refresh_token_gen(user_id: ObjectId):
+def refresh_token_gen(user_id: ObjectId):
     """Generate refresh token based on usser id."""
 
     refresh_token = token_encode({
         'token_type':'refresh',
         'user_id':str(user_id),
-        'exp': datetime.utcnow() + timedelta(minutes=1),
+        'exp': datetime.utcnow() + timedelta(minutes=10),
         'iat': datetime.utcnow(),
         'jti':jti
     })
     
-    return await refresh_token
+    return refresh_token
 
 
 
-async def token_encode(payload):
+def token_encode(payload):
     """Encode tokens based on HS256 algorithm"""
 
     token = jwt.encode(payload=payload, key=JWT_SECRET, algorithm=JWT_ALGORITHM)
-    return await token
+    return token
 
 
 
 
-async def token_decode(token):
+def token_decode(token):
     """Dencode tokens based on HS256 algorithm"""
 
     payload = jwt.decode(jwt=token, key=JWT_SECRET, algorithms=[JWT_ALGORITHM])
-    return await payload
+    return payload
 
 
