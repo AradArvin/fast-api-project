@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from book_library.routes import router as book_router
-from jwt_auth.routes import router as user_router
+from routes.book_routes import book_router
+from routes.user_routes import user_router
 
 
 app = FastAPI()
