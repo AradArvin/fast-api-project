@@ -119,4 +119,26 @@ async def user_profile(user: UserProfile = Body(), auth_token: AuthJWT = Body())
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found. Please check login data!")
 
 
+
+@user_router.put("/update_profile", response_description="Update you'r profile data", status_code=status.HTTP_201_CREATED)
+async def update_user_profile(user: UpdateProfile = Body(), auth_token: AuthJWT = Body()):
+    
+    token = jsonable_encoder(auth_token)
+
+
+    if await check_token_expiry(token["token"]) != "expired":
+        payload = token_decode(token["token"])
+        user_data = user_collection.find_data_by_id(ObjectId(payload["user_id"]))
+        new_user_data = {k: v for k, v in dict(user).items() if v if not None}
+
+        if len(new_user_data) >= 1:
+            result = user_collection.update_db_collection_data(instance_id=ObjectId(user_data["_id"]), updated_instance=new_user_data)
+
+            if result.modified_count == 0:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No changes detected!")
+            updated_user_data = user_collection.find_data_by_id(instance_id=ObjectId(user_data["_id"]))
+            return updated_user_data
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token is invalid!")
+    
+    
 # TODO logout
